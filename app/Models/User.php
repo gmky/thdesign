@@ -7,6 +7,7 @@ use App\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -60,6 +61,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function isAdmin()
     {
-        return $this->role == UserRole::ADMIN;
+        return $this->role == UserRole::ADMIN->value;
     }
 }

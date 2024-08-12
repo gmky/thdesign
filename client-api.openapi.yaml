@@ -190,6 +190,9 @@ components:
           type: string
         password:
           type: string
+      required:
+        - email
+        - password
     LoginResponse:
       type: object
       properties:
@@ -242,6 +245,9 @@ components:
           type: string
         published:
           type: boolean
+        category_id:
+          type: integer
+          format: int64
         banner:
           type: string
           format: binary
@@ -253,6 +259,11 @@ components:
           items:
             type: string
             format: binary
+      required:
+        - name
+        - published
+        - banner
+        - thumbnail
     ProductDto:
       type: object
       properties:
@@ -319,3 +330,9 @@ components:
             - ADMIN
             - NORMAL_USER
             - EDITOR
+      required:
+        - name
+        - email
+        - password
+        - password_confirmation
+        - role

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -30,7 +31,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all(['name', 'description']);
+        $data = $request->all(['name', 'description', 'published', 'category_id']);
         $featured_images = $request->file('featured_images');
         $banner = $request->file('banner');
         $thumbnail = $request->file('thumbnail');
