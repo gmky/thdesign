@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $page = $request->query('page', 1);
         $size = $request->query('size', 10);
-        return Product::where('published', false)->simplePaginate($perPage = $size);
+        return Product::query()->paginate(perPage: $size, page: $page);
     }
 
     /**
@@ -77,7 +77,11 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (!auth()->user()->isAdmin())
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        Product::destroy($id);
+        return response()->json(null);
     }
 
     private function uploadFiles($files)

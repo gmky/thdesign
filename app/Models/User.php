@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -54,5 +56,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == UserRole::ADMIN;
     }
 }
