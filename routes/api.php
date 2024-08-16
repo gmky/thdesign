@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageSetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -28,3 +29,5 @@ Route::group([
     Route::resource("/users", UserController::class);
 });
 
+Route::post("/image-set", [ImageSetController::class, "upload"]);
+Route::get('/products', [ProductController::class, 'index']);

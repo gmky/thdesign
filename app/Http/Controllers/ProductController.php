@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ImageSet;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -29,23 +32,39 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) : JsonResponse
     {
-        $data = $request->all(['name', 'description', 'published', 'category_id']);
-        $featured_images = $request->file('featured_images');
-        $banner = $request->file('banner');
-        $thumbnail = $request->file('thumbnail');
+        if (!auth()->user()->canCreateProduct())
+            return response()->json(['message' => 'Unauthorized'], 401);
 
-        $featured_images_json = $this->uploadFiles($featured_images);
-        $banner = $this->uploadFile($banner);
-        $thumbnail = $this->uploadFile($thumbnail);
+        $banner = null;
+        $thumbnail = null;
 
-        $product = new Product($data);
-        $product->featured_images = $featured_images_json;
-        $product->thumbnail = $thumbnail;
-        $product->banner = $banner;
-        $product->save();
-        return $product;
+        try {
+            DB::beginTransaction();
+            $data = $request->all(['name', 'description', 'published', 'category_id']);
+            $image_set_ids = $request->get('image_set', []);
+            $banner = $request->file('banner');
+            $thumbnail = $request->file('thumbnail');
+
+            $banner = $this->uploadFile($banner);
+            $thumbnail = $this->uploadFile($thumbnail);
+
+            $product = new Product($data);
+            $product->thumbnail = $thumbnail;
+            $product->banner = $banner;
+            $product->save();
+            $image_set = ImageSet::whereNull('product_id')->whereIn('id', $image_set_ids)->get();
+            $product->image_set()->saveMany($image_set);
+            $product->load(['image_set', 'image_set.images']);
+            DB::commit();
+            return response()->json($product);
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            Storage::disk('public')->delete($banner);
+            Storage::disk('public')->delete($thumbnail);
+            return response()->json(['message' => $ex->getMessage()], 500);
+        }
     }
 
     /**
@@ -54,6 +73,7 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::find($id);
+        $product->load(['image_set', 'image_set.images']);
         return $product;
     }
 
@@ -85,11 +105,11 @@ class ProductController extends Controller
         return response()->json(null);
     }
 
-    private function uploadFiles($files)
+    private function uploadFiles($files = [])
     {
         $featured_images_json = [];
         foreach ($files as $file) {
-            $filePath = $file->storeAs('/products', $file->hashName(), 'public');
+            $filePath = $file->storeAs('/products', time().'_'.$file->hashName(), 'public');
             $featured_images_json[] = $filePath;
         }
         return json_encode($featured_images_json);
@@ -97,6 +117,6 @@ class ProductController extends Controller
 
     private function uploadFile($file)
     {
-        return $file->storeAs('/products', $file->hashName(), 'public');
+        return $file->storeAs('/products', time().'_'.$file->hashName(), 'public');
     }
 }
