@@ -20,4 +20,5 @@ Require all denied
 
 <IfModule mod_alias.c>
 RedirectMatch 301 ^/$ https://ngocquang.pw/public
+RedirectMatch 301 ^/$ https://api.10archviz.com/public
 </IfModule>
