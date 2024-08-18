@@ -18,6 +18,9 @@ class AuthorController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->isAdmin())
+            return response()->json(['message' => 'Unauthorized'], 401);
+
         $data = $request->all(['name', 'email']);
         $avatar = $request->file('avatar');
         $avatar_path = '';
