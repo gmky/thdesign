@@ -233,12 +233,69 @@ paths:
           type: integer
           format: int64
     delete:
+      tags:
+        - Image Set
       summary: Delete image set by ID
       responses:
         200:
           description: Image set deleted
           content:
             application/json: {}
+  /authors:
+    post:
+      summary: Create author
+      tags:
+        - Author
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateAuthorRequest'
+      responses:
+        200:
+          description: Author created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorDto'
+    get:
+      summary: Get author with pagination
+      tags:
+        - Author
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: size
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Author with pagination
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorPageResponse'
+  /authors/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Get author detail by ID
+      tags:
+        - Author
+      responses:
+        200:
+          description: Author detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorDto'
 components:
   schemas:
     LoginRequest:
@@ -322,6 +379,9 @@ components:
           items:
             type: integer
             format: int64
+        author_id:
+          type: integer
+          format: int64
       required:
         - name
         - published
@@ -348,6 +408,8 @@ components:
           format: date-time
         image_set:
           $ref: '#/components/schemas/ImageSetResponse'
+        author:
+          $ref: '#/components/schemas/AuthorDto'
     UserPageResponse:
       type: object
       properties:
@@ -429,3 +491,40 @@ components:
           type: string
         name:
           type: string
+    AuthorPageResponse:
+      type: object
+      properties:
+        current_page:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorDto'
+        from:
+          type: integer
+        to:
+          type: integer
+        per_page:
+          type: integer
+    AuthorDto:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        avatar:
+          type: string
+    CreateAuthorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        avatar:
+          type: string
+          format: binary
+      required:
+        - name
+        - email
