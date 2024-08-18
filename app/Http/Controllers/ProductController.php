@@ -74,7 +74,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (!$product) return response()->json(['message' => 'Product not found'], 404);
-        $product->load(['image_set', 'image_set.images']);
+        $product->load(['image_set', 'image_set.images', 'author']);
         return $product;
     }
 

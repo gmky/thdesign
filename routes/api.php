@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ImageSetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -33,4 +34,7 @@ Route::group([
     Route::resource("/users", UserController::class);
     Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
     Route::post("/image-set", [ImageSetController::class, "upload"]);
+    Route::post('/authors', [AuthorController::class, 'store']);
+    Route::get('/authors', [AuthorController::class, 'index']);
+    Route::get('/authors/{id}', [AuthorController::class, 'show']);
 });
