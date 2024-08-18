@@ -11,6 +11,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get("/image-set", [ImageSetController::class, "index"]);
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -30,7 +34,3 @@ Route::group([
     Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
     Route::post("/image-set", [ImageSetController::class, "upload"]);
 });
-
-Route::get("/image-set", [ImageSetController::class, "index"]);
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{id}', [ProductController::class, 'show']);
