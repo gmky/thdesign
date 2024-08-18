@@ -30,4 +30,6 @@ Route::group([
 });
 
 Route::post("/image-set", [ImageSetController::class, "upload"]);
+Route::get("/image-set", [ImageSetController::class, "index"]);
+Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
 Route::get('/products', [ProductController::class, 'index']);

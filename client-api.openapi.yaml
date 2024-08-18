@@ -115,6 +115,8 @@ paths:
     delete:
       summary: Delete product by ID
       description: Require ADMIN role
+      tags:
+        - Product
       responses:
         200:
           description: Product deleted
@@ -167,6 +169,8 @@ paths:
           format: int64
     get:
       summary: Get user detail by ID
+      tags:
+        - User
       responses:
         200:
           description: User profile
@@ -176,14 +180,38 @@ paths:
                 $ref: '#/components/schemas/UserProfile'
     delete:
       summary: Delete user by ID
+      tags:
+        - User
       responses:
         200:
           description: User deleted
           content:
             application/json: {}
   /image-set:
+    get:
+      summary: Get image set with pagination
+      tags:
+        - Image Set
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: size
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Image set detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageSetResponse'
     post:
       summary: Upload images
+      tags:
+        - Image Set
       requestBody:
         content:
           multipart/form-data:
@@ -196,6 +224,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImageSetResponse'
+  /image-set/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      summary: Delete image set by ID
+      responses:
+        200:
+          description: Image set deleted
+          content:
+            application/json: {}
 components:
   schemas:
     LoginRequest:
