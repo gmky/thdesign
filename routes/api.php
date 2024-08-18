@@ -27,9 +27,9 @@ Route::group([
 ], function ($router) {
     Route::resource("/products", ProductController::class);
     Route::resource("/users", UserController::class);
+    Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
+    Route::post("/image-set", [ImageSetController::class, "upload"]);
 });
 
-Route::post("/image-set", [ImageSetController::class, "upload"]);
 Route::get("/image-set", [ImageSetController::class, "index"]);
-Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
 Route::get('/products', [ProductController::class, 'index']);
