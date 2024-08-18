@@ -18,7 +18,6 @@ class ImageSetController extends Controller
         try {
             DB::beginTransaction();
             $images = $request->file('images');
-            Log::debug($images);
             $image_set = new ImageSet();
             $image_set->save();
             foreach ($images as $image) {
