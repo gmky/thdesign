@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -21,5 +23,19 @@ class Product extends Model
     public function author() : BelongsTo
     {
         return $this->belongsTo(Author::class, 'author_id');
+    }
+
+    public function thumbnail() : Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => Storage::disk('public')->url($value),
+        );
+    }
+
+    public function banner() : Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => Storage::disk('public')->url($value),
+        );
     }
 }
