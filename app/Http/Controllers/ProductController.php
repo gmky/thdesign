@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         $page = $request->query('page', 1);
         $size = $request->query('size', 10);
-        return Product::query()->paginate(perPage: $size, page: $page);
+        return Product::query()->with('author')->paginate(perPage: $size, page: $page);
     }
 
     /**
