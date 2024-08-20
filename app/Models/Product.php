@@ -11,7 +11,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'thumbnail', 'featured_images', 'banner', 'category_id', 'published'];
+    protected $fillable = ['name', 'description', 'thumbnail', 'featured_images', 'banner', 'category_id', 'published', 'external_link'];
 
     public function image_set() : HasMany
     {

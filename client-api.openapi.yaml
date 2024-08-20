@@ -369,6 +369,8 @@ components:
         thumbnail:
           type: string
           format: binary
+        external_link:
+          type: string
         featured_images:
           type: array
           items:
@@ -406,6 +408,8 @@ components:
         created_at:
           type: string
           format: date-time
+        external_link:
+          type: string
         image_set:
           $ref: '#/components/schemas/ImageSetResponse'
         author:
@@ -509,6 +513,9 @@ components:
     AuthorDto:
       type: object
       properties:
+        id:
+          type: integer
+          format: int64
         name:
           type: string
         email:

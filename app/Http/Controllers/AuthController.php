@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\UserRole;
+use App\UserStatus;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -23,6 +25,8 @@ class AuthController extends Controller
         $user->name = request()->name;
         $user->email = request()->email;
         $user->password = bcrypt(request()->password);
+        $user->status = UserStatus::INACTIVE->value;
+        $user->role = UserRole::NORMAL_USER->value;
         $user->save();
 
         return response()->json($user, 201);

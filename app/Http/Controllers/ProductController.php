@@ -42,7 +42,7 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
-            $data = $request->all(['name', 'description', 'published', 'category_id', 'author_id']);
+            $data = $request->all(['name', 'description', 'published', 'category_id', 'author_id', 'external_link']);
             $image_set_ids = $request->get('image_set', []);
             $banner = $request->file('banner');
             $thumbnail = $request->file('thumbnail');
