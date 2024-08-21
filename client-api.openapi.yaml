@@ -118,7 +118,7 @@ paths:
         - Product
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateProductRequest'
       responses:
@@ -318,7 +318,7 @@ paths:
         - Author
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/CreateAuthorRequest'
       responses:
@@ -330,6 +330,8 @@ paths:
                 $ref: '#/components/schemas/AuthorDto'
     delete:
       summary: Delete author
+      tags:
+        - Author
       responses:
         200:
           description: Deleted

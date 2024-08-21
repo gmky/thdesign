@@ -65,7 +65,7 @@ class AuthorController extends Controller
             $author = Author::query()->findOrFail($id);
             $data = $request->all(['name', 'email']);
             $avatar = $request->file('avatar');
-            $avatar_path = $avatar->storeAs('/avatar', $avatar->hashName(), 'public');
+            $avatar_path = $avatar?->storeAs('/avatar', $avatar->hashName(), 'public');
             $author->name = $data['name'];
             $author->email = $data['email'];
             $author->avatar = $avatar_path;
