@@ -112,6 +112,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductDto'
+    put:
+      summary: Update product
+      tags:
+        - Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+      responses:
+        200:
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
     delete:
       summary: Delete product by ID
       description: Require ADMIN role

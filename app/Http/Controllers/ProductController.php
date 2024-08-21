@@ -53,6 +53,7 @@ class ProductController extends Controller
             $product = new Product($data);
             $product->thumbnail = $thumbnail;
             $product->banner = $banner;
+            $product->description = e($data['description']);
             $product->save();
             $image_set = ImageSet::whereNull('product_id')->whereIn('id', $image_set_ids)->get();
             $product->image_set()->saveMany($image_set);
@@ -91,7 +92,38 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if (!auth()->user()->canCreateProduct())
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        $product = Product::findOrFail($id);
+        $old_banner = $product->banner;
+        $old_thumbnail = $product->thumbnail;
+        try {
+            DB::beginTransaction();
+            $data = $request->all(['name', 'description', 'published', 'category_id', 'author_id', 'external_link']);
+            $image_set_ids = $request->get('image_set', []);
+            $banner = $request->file('banner');
+            $thumbnail = $request->file('thumbnail');
+            if ($banner) {
+                $product->banner = $this->uploadFile($banner);
+            }
+            if ($thumbnail) {
+                $product->thumbnail = $this->uploadFile($thumbnail);
+            }
+            $product->update($data);
+            $product->description = e($data['description']);
+            $image_set = ImageSet::whereNull('product_id')->whereIn('id', $image_set_ids)->get();
+            $product->image_set()->saveMany($image_set);
+            $product->save();
+            DB::commit();
+            return $product;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return response()->json(['message' => $ex->getMessage()], 500);
+        } finally {
+            Storage::disk('public')->delete($old_banner);
+            Storage::disk('public')->delete($old_thumbnail);
+        }
     }
 
     /**
