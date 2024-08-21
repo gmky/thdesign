@@ -335,6 +335,34 @@ paths:
           description: Deleted
           content:
             application/json: {}
+  /images:
+    get:
+      summary: Get all image with pagination
+      tags:
+        - Image
+      responses:
+        200:
+          description: List images
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImagePageResponse'
+  /images/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+    delete:
+      summary: Delete image
+      tags:
+        - Image
+      responses:
+        200:
+          description: Image deleted
+          content:
+            application/json: {}
 components:
   schemas:
     LoginRequest:
@@ -468,6 +496,8 @@ components:
           type: integer
         per_page:
           type: integer
+        total:
+          type: integer
     ProductPageResponse:
       type: object
       properties:
@@ -482,6 +512,8 @@ components:
         to:
           type: integer
         per_page:
+          type: integer
+        total:
           type: integer
     CreateUserRequest:
       type: object
@@ -549,6 +581,8 @@ components:
           type: integer
         per_page:
           type: integer
+        total:
+          type: integer
     AuthorDto:
       type: object
       properties:
@@ -574,3 +608,20 @@ components:
       required:
         - name
         - email
+    ImagePageResponse:
+      type: object
+      properties:
+        current_page:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageDto'
+        from:
+          type: integer
+        to:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
