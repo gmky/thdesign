@@ -296,6 +296,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorDto'
+    put:
+      summary: Update author by ID
+      tags:
+        - Author
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAuthorRequest'
+      responses:
+        200:
+          description: Update successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorDto'
+    delete:
+      summary: Delete author
+      responses:
+        200:
+          description: Deleted
+          content:
+            application/json: {}
 components:
   schemas:
     LoginRequest:
