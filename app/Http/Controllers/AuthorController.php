@@ -38,6 +38,29 @@ class AuthorController extends Controller
         }
     }
 
+    public function update(Request $request, $id) {
+        if (!auth()->user()->isAdmin())
+            return response()->json(['message' => 'Unauthorized'], 401);
+        $avatar_path = null;
+        try {
+            DB::beginTransaction();
+            $author = Author::query()->findOrFail($id);
+            $data = $request->all(['name', 'email']);
+            $avatar = $request->file('avatar');
+            $avatar_path = $avatar?->storeAs('/avatar', $avatar->hashName(), 'public');
+            $author->fill($data);
+            $author->avatar = $avatar_path;
+            $author->save();
+            return response()->json($author);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            if ($avatar_path != null) {
+                Storage::disk('public')->delete($avatar_path);
+            }
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+    }
+
     public function show($id)
     {
         $author = Author::query()->findOrFail($id);
@@ -54,29 +77,5 @@ class AuthorController extends Controller
             return response()->json(['message' => 'Author cannot be deleted'], 500);
         $author->delete();
         return response()->json(['message' => 'Author deleted']);
-    }
-
-    public function update(Request $request, $id) {
-        if (!auth()->user()->isAdmin())
-            return response()->json(['message' => 'Unauthorized'], 401);
-        $avatar_path = null;
-        try {
-            DB::beginTransaction();
-            $author = Author::query()->findOrFail($id);
-            $data = $request->all(['name', 'email']);
-            $avatar = $request->file('avatar');
-            $avatar_path = $avatar?->storeAs('/avatar', $avatar->hashName(), 'public');
-            $author->name = $data['name'];
-            $author->email = $data['email'];
-            $author->avatar = $avatar_path;
-            $author->save();
-            return response()->json($author);
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            if ($avatar_path != null) {
-                Storage::disk('public')->delete($avatar_path);
-            }
-            return response()->json(['message' => $exception->getMessage()], 500);
-        }
     }
 }

@@ -28,15 +28,15 @@ Route::group([
 ], function ($router) {
     Route::post("/products", [ProductController::class, 'store']);
     Route::delete("/products/{id}", [ProductController::class, 'destroy']);
-    Route::put("/products/{id}", [ProductController::class, 'update']);
+    Route::post("/products/{id}", [ProductController::class, 'update']);
     Route::resource("/users", UserController::class);
     Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
     Route::post("/image-set", [ImageSetController::class, "upload"]);
     Route::post('/authors', [AuthorController::class, 'store']);
     Route::get('/authors', [AuthorController::class, 'index']);
     Route::get('/authors/{id}', [AuthorController::class, 'show']);
+    Route::post('/authors/{id}', [AuthorController::class, 'update']);
     Route::delete('/authors/{id}', [AuthorController::class, 'destroy']);
-    Route::put('/authors/{id}', [AuthorController::class, 'update']);
     Route::get('/images', [ImageSetController::class, 'index']);
     Route::get('/images/{id}', [ImageSetController::class, 'destroy']);
 });
