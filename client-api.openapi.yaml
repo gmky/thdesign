@@ -112,7 +112,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductDto'
-    put:
+    post:
       summary: Update product
       tags:
         - Product
@@ -312,7 +312,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorDto'
-    put:
+    post:
       summary: Update author by ID
       tags:
         - Author
