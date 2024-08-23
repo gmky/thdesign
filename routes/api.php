@@ -33,7 +33,6 @@ Route::group([
     Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
     Route::post("/image-set", [ImageSetController::class, "upload"]);
     Route::post('/authors', [AuthorController::class, 'store']);
-    Route::get('/authors', [AuthorController::class, 'index']);
     Route::get('/authors/{id}', [AuthorController::class, 'show']);
     Route::post('/authors/{id}', [AuthorController::class, 'update']);
     Route::delete('/authors/{id}', [AuthorController::class, 'destroy']);
@@ -44,3 +43,4 @@ Route::group([
 Route::get("/image-set", [ImageSetController::class, "index"]);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::get('/authors', [AuthorController::class, 'index']);
