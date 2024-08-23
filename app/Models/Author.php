@@ -29,7 +29,7 @@ class Author extends Model
     {
         return Attribute::make(
             get: fn(string | null $value) => json_decode($value),
-            set: fn(string | null $value) => json_encode($value)
+            set: fn(array $value) => json_encode($value)
         );
     }
 }
