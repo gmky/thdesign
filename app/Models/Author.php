@@ -24,4 +24,12 @@ class Author extends Model
             get: fn(string $value) => Storage::disk('public')->url($value),
         );
     }
+
+    public function tags() : Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => json_decode($value, true),
+            set: fn(string $value) => json_encode($value)
+        );
+    }
 }

@@ -22,7 +22,7 @@ class AuthorController extends Controller
         if (!auth()->user()->isAdmin())
             return response()->json(['message' => 'Unauthorized'], 401);
 
-        $data = $request->all(['name', 'email', 'job_title']);
+        $data = $request->all(['name', 'email', 'job_title', 'tags']);
         $tags = $request->input('tags');
         $avatar = $request->file('avatar');
         $avatar_path = '';
@@ -30,7 +30,6 @@ class AuthorController extends Controller
             $author = new Author($data);
             $avatar_path = $avatar->storeAs('/avatar', $avatar->hashName(), 'public');
             $author->avatar = $avatar_path;
-            $author->tags = json_encode($tags);
             $author->save();
             return response()->json($author);
         } catch (\Exception $exception) {

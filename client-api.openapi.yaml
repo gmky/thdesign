@@ -597,6 +597,12 @@ components:
           type: string
         avatar:
           type: string
+        tags:
+          type: array
+          items:
+            type: string
+        job_title:
+          type: string
     CreateAuthorRequest:
       type: object
       properties:
