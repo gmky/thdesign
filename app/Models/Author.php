@@ -11,7 +11,7 @@ class Author extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'avatar', 'email'];
+    protected $fillable = ['name', 'avatar', 'email', 'job_title', 'tags'];
 
     public function products()
     {
