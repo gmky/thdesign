@@ -47,12 +47,11 @@ class AuthorController extends Controller
         try {
             DB::beginTransaction();
             $author = Author::query()->findOrFail($id);
-            $data = $request->all(['name', 'email']);
+            $data = $request->all(['name', 'email', 'tags']);
             $avatar = $request->file('avatar');
             $avatar_path = $avatar?->storeAs('/avatar', $avatar->hashName(), 'public');
-            $author->fill($data);
             $author->avatar = $avatar_path;
-            $author->save();
+            $author->update($data);
             return response()->json($author);
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -65,7 +64,7 @@ class AuthorController extends Controller
 
     public function show($id)
     {
-        $author = Author::query()->findOrFail($id);
+        $author = Author::findOrFail($id);
         return response()->json($author);
     }
 
