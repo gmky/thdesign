@@ -100,7 +100,7 @@ class ProductController extends Controller
         $old_thumbnail = $product->thumbnail;
         try {
             DB::beginTransaction();
-            $data = $request->all(['name', 'description', 'published', 'category_id', 'author_id', 'external_link']);
+            $data = request()->all(['name', 'description', 'published', 'category_id', 'author_id', 'external_link', 'author_id']);
             $image_set_ids = $request->get('image_set', []);
             $banner = $request->file('banner');
             $thumbnail = $request->file('thumbnail');

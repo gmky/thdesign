@@ -13,7 +13,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'thumbnail', 'featured_images', 'banner', 'category_id', 'published', 'external_link'];
+    protected $fillable = ['name', 'description', 'thumbnail', 'featured_images', 'banner', 'category_id', 'published', 'external_link', 'author_id'];
 
     public function image_set() : HasMany
     {
@@ -36,6 +36,13 @@ class Product extends Model
     {
         return Attribute::make(
             get: fn(string | null $value) => $value ? Storage::disk('public')->url($value) : null,
+        );
+    }
+
+    public function published()  : Attribute
+    {
+        return Attribute::make(
+            set: fn(bool | null $value) => $value == null ? false : $value,
         );
     }
 }
