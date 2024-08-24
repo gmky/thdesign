@@ -15,7 +15,7 @@ class ImageSet extends Model
 
     public function images() : HasMany
     {
-        return $this->hasMany(Image::class, 'image_set_id');
+        return $this->hasMany(Image::class, 'image_set_id')->orderBy('id');
     }
 
     public function product() : BelongsTo

@@ -17,7 +17,7 @@ class Product extends Model
 
     public function image_set() : HasMany
     {
-        return $this->hasMany(ImageSet::class);
+        return $this->hasMany(ImageSet::class)->orderBy('id');
     }
 
     public function author() : BelongsTo
