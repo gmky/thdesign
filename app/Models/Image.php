@@ -20,7 +20,7 @@ class Image extends Model
     public function path() : Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => Storage::disk('public')->url($value),
+            get: fn(string | null $value) => $value ? Storage::disk('public')->url($value) : null,
         );
     }
 }
