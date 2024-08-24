@@ -19,6 +19,7 @@ class ImageSetController extends Controller
             DB::beginTransaction();
             $images = $request->file('images');
             $image_set = new ImageSet();
+            $image_set->display_order = $request->only('display_order');
             $image_set->save();
             foreach ($images as $image) {
                 Log::info('Save image '.$image->getClientOriginalName());

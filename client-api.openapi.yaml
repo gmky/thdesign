@@ -554,6 +554,8 @@ components:
         id:
           type: integer
           format: int64
+        display_order:
+          type: integer
         images:
           type: array
           items:

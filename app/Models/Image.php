@@ -12,6 +12,8 @@ class Image extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['display_order'];
+
     public function image_set() : BelongsTo
     {
         return $this->belongsTo(ImageSet::class);

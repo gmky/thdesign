@@ -13,6 +13,8 @@ class ImageSet extends Model
 
     protected $table = 'image_set';
 
+    protected $fillable = ['display_order'];
+
     public function images() : HasMany
     {
         return $this->hasMany(Image::class, 'image_set_id')->orderBy('id');
