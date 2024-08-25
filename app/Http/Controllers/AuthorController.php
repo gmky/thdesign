@@ -27,7 +27,7 @@ class AuthorController extends Controller
         $avatar_path = '';
         try {
             $author = new Author($data);
-            if ($avatar) {
+            if ($avatar->isValid()) {
                 $avatar_path = $avatar->storeAs('/avatar', $avatar->hashName(), 'public');
                 $author->avatar = $avatar_path;
             }
@@ -49,8 +49,10 @@ class AuthorController extends Controller
             $author = Author::query()->findOrFail($id);
             $data = $request->all(['name', 'email', 'tags']);
             $avatar = $request->file('avatar');
-            $avatar_path = $avatar?->storeAs('/avatar', $avatar->hashName(), 'public');
-            $author->avatar = $avatar_path;
+            if($avatar->isValid()) {
+                $avatar_path = $avatar?->storeAs('/avatar', $avatar->hashName(), 'public');
+                $author->avatar = $avatar_path;
+            }
             $author->update($data);
             return response()->json($author);
         } catch (\Exception $exception) {

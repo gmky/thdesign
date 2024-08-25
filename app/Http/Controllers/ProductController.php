@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -76,7 +77,8 @@ class ProductController extends Controller
         $product = Product::find($id);
         if (!$product) return response()->json(['message' => 'Product not found'], 404);
         $product->load(['image_set', 'image_set.images', 'author']);
-        return $product;
+        Log::info($product);
+        return response()->json($product);
     }
 
     /**

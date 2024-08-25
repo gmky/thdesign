@@ -28,8 +28,8 @@ class Author extends Model
     public function tags() : Attribute
     {
         return Attribute::make(
-            get: fn(string | null $value) => json_decode($value),
-            set: fn(array $value) => json_encode($value)
+            get: fn(string | null $value) => $value ? json_decode($value) : array(),
+            set: fn(array | null $value) => $value ? json_encode($value) : array()
         );
     }
 }
