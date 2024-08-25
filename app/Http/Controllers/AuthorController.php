@@ -46,8 +46,12 @@ class AuthorController extends Controller
         $avatar_path = null;
         try {
             DB::beginTransaction();
-            $author = Author::query()->findOrFail($id);
             $data = $request->all(['name', 'email', 'tags']);
+            $name_existed = Author::query()->where('id','!=', $id)->where('name', $data['name'])->count();
+            if ($name_existed) {
+                return response()->json(['message' => 'Name already existed'], 400);
+            }
+            $author = Author::query()->findOrFail($id);
             $avatar = $request->file('avatar');
             if($avatar && $avatar->isValid()) {
                 $avatar_path = $avatar?->storeAs('/avatar', $avatar->hashName(), 'public');
