@@ -69,6 +69,7 @@ class ImageSetController extends Controller
                 Storage::disk('public')->delete($image->path);
                 $image->delete();
             }
+            $image_set->delete();
             DB::commit();
             return response()->json()->setStatusCode(200);
         } catch (\Exception $exception) {
