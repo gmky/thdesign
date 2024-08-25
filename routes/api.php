@@ -31,6 +31,7 @@ Route::group([
     Route::post("/products/{id}", [ProductController::class, 'update']);
     Route::resource("/users", UserController::class);
     Route::delete("/image-set/{id}", [ImageSetController::class, "destroy"]);
+    Route::post("/image-set/{id}", [ImageSetController::class, "update"]);
     Route::post("/image-set", [ImageSetController::class, "upload"]);
     Route::post('/authors', [AuthorController::class, 'store']);
     Route::get('/authors/{id}', [AuthorController::class, 'show']);

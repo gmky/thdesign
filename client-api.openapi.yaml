@@ -248,6 +248,26 @@ paths:
         schema:
           type: integer
           format: int64
+    post:
+      summary: Update image set order
+      description: Update image set order
+      tags:
+        - Image Set
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                display_order:
+                  type: integer
+      responses:
+        200:
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageSetResponse'
     delete:
       tags:
         - Image Set

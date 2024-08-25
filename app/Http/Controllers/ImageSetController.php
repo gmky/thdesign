@@ -19,7 +19,7 @@ class ImageSetController extends Controller
             DB::beginTransaction();
             $images = $request->file('images');
             $image_set = new ImageSet();
-            $image_set->display_order = $request->only('display_order');
+            $image_set->display_order = $request->input('display_order');
             $image_set->save();
             foreach ($images as $image) {
                 Log::info('Save image '.$image->getClientOriginalName());
@@ -36,6 +36,17 @@ class ImageSetController extends Controller
             DB::rollBack();
             return response()->json(['message' => $exception->getMessage()], 500);
         }
+    }
+
+    public function update(Request $request, $id)
+    {
+        if (!auth()->user()->canCreateProduct())
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        $image_set = ImageSet::findOrFail($id);
+        $image_set->display_order = $request->input('display_order');
+        $image_set->save();
+        return response()->json($image_set);
     }
 
     public function index(Request $request)

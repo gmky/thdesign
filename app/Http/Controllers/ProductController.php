@@ -116,7 +116,7 @@ class ProductController extends Controller
             $product->image_set()->saveMany($image_set);
             $product->save();
             DB::commit();
-            return $product;
+            return response()->json($product);
         } catch (\Exception $ex) {
             DB::rollBack();
             return response()->json(['message' => $ex->getMessage()], 500);
