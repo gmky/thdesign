@@ -46,7 +46,7 @@ class AuthorController extends Controller
         $avatar_path = null;
         try {
             DB::beginTransaction();
-            $data = $request->all(['name', 'email', 'tags']);
+            $data = $request->all(['name', 'email', 'tags', 'job_title']);
             $name_existed = Author::query()->where('id','!=', $id)->where('name', $data['name'])->count();
             if ($name_existed) {
                 return response()->json(['message' => 'Name already existed'], 400);
